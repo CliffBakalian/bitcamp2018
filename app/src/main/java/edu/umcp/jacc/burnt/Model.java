@@ -12,10 +12,9 @@ import android.media.FaceDetector;
 import android.support.annotation.NonNull;
 
 public class Model {
-    public void PicureStuff(Context c){
-        String[] lst = new String[0];
+    public static CameraManager openCamera(Context c){
         String id="BACK";
-        CameraManager manager = (CameraManager) c.getSystemService(Context.CAMERA_SERVICE);
+        CameraManager manager = (CameraManager)c.getSystemService(Context.CAMERA_SERVICE);
         try {
             if (manager != null) {
                 for (String cameraId : manager.getCameraIdList()) {
@@ -50,6 +49,7 @@ public class Model {
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
+        return manager;
     }
 
     public int manipulate(Bitmap bm){

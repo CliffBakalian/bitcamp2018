@@ -12,5 +12,6 @@ public class DataParser {
     }
 
     public float parseFacial() {
+        return 0.1f;
     }
 }
