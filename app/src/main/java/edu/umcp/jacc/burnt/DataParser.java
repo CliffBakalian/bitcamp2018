@@ -5,13 +5,16 @@ import org.json.*;
 
 public class DataParser {
 
-    public float parseUV(String jsondata) throws JSONException {
-        JSONObject obj = new JSONObject(jsondata);
-        float uvVal = obj.getJSONArray("result").getInt(2);
+    public static float parseUV(String jsondata) {
+        JSONObject obj = null;
+        float uvVal = 0.0f;
+        try {
+            obj = new JSONObject(jsondata);
+            uvVal = obj.getJSONArray("result").getInt(2);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         return uvVal;
-    }
-
-    public float calcUV(float elevation, float cloudCoverage, float ozone){
-
     }
 }
