@@ -51,16 +51,24 @@ public class Model {
         }
     }
 
-    public void manipulate(Bitmap bm){
+    public int manipulate(Bitmap bm){
         FaceDetector fd = new FaceDetector(bm.getWidth(),bm.getHeight(),1);
         FaceDetector.Face[] face = new FaceDetector.Face[1];
         fd.findFaces(bm,face);
         float edist = face[0].eyesDistance();
-        PointF midpoint = new PointF();
-        face[0].getMidPoint(midpoint);
-        midpoint.set(midpoint.x,midpoint.y - (edist/2));
-        
-        
+        PointF point = new PointF();
+        face[0].getMidPoint(point);
+        point.set(point.x,point.y - (edist/2));
+        int xPos = (int)point.x;
+        int yPos = (int)point.y;
+        int negOffset = xPos - (int)edist/2;
+        int posOffset = xPos + (int)edist/2;
+        int color = 0;
+        for (int i = negOffset; i <= posOffset; i++){
+            color +=bm.getPixel(i,yPos);
+        }
+        color = color/(posOffset-negOffset + 2);
+        return color;
     }
 
 }
