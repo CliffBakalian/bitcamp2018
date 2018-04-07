@@ -1,29 +1,23 @@
 package edu.umcp.jacc.burnt;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.android.volley.Request;
-import com.esri.arcgisruntime.geometry.Point;
-import com.esri.arcgisruntime.mapping.view.MapView;
 
 public class Informer extends AppCompatActivity implements LocationListener {
+
     private static final String TAG = "Informer";
 
     private int color;
@@ -31,6 +25,7 @@ public class Informer extends AppCompatActivity implements LocationListener {
     private LocationManager locationManager;
 
     public boolean checkLocationPermission() {
+        Log.d(TAG, "checkLocationPermission");
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -65,13 +60,16 @@ public class Informer extends AppCompatActivity implements LocationListener {
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case 99: {
+                Log.d(TAG, "case 99");
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d(TAG, "permission granted");
                     // permission was granted, yay! Do the
                     // location-related task you need to do.
                     if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                         //Request location updates:
-                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 400, 1, this);
+                        Log.d(TAG, "putting in location request");
+                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 1, this);
                     }
 
                 } else {
@@ -92,7 +90,7 @@ public class Informer extends AppCompatActivity implements LocationListener {
         setContentView(R.layout.activity_informer);
 
         color = getIntent().getIntExtra("color", 0xFFFF);
-
+        Log.d(TAG, "begun -- color = " + color);
         checkLocationPermission();
     }
 
@@ -100,7 +98,8 @@ public class Informer extends AppCompatActivity implements LocationListener {
     protected void onResume() {
         super.onResume();
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 400, 1, this);
+            if (locationManager != null)
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 400, 1, this);
         }
     }
 
@@ -108,7 +107,8 @@ public class Informer extends AppCompatActivity implements LocationListener {
     protected void onPause() {
         super.onPause();
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            locationManager.removeUpdates(this);
+            if (locationManager != null)
+                locationManager.removeUpdates(this);
         }
     }
 
@@ -129,16 +129,16 @@ public class Informer extends AppCompatActivity implements LocationListener {
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-
+        Log.d(TAG, "onStatusChanged");
     }
 
     @Override
     public void onProviderEnabled(String provider) {
-
+        Log.d(TAG, "onProviderEnabled");
     }
 
     @Override
     public void onProviderDisabled(String provider) {
-
+        Log.d(TAG, "onProviderDisabled");
     }
 }

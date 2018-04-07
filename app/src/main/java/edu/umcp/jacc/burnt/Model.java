@@ -1,6 +1,7 @@
 package edu.umcp.jacc.burnt;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PointF;
@@ -33,9 +34,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static android.graphics.Color.argb;
+
+import javax.xml.transform.Result;
 
 public class Model {
 
@@ -106,28 +110,24 @@ public class Model {
         return argb(alpha/avg,red/avg,green/avg,blue/avg);
     }
 
-    public int google(Bitmap bm) {
+    public static void google(Bitmap bm, final Context ctx) {
         final Bitmap temp = bm;
-        Vision.Builder visionBuilder = new Vision.Builder(
-                new NetHttpTransport(),
-                new AndroidJsonFactory(),
-                null);
+        Vision.Builder visionBuilder = new Vision.Builder(new NetHttpTransport(), new AndroidJsonFactory(), null);
 
-        visionBuilder.setVisionRequestInitializer(
-                new VisionRequestInitializer("AIzaSyAWxBl0hkjk4TehMWR07Y1TPfV1ihFchjA"));
-        final Vision vision = visionBuilder.build();
+        visionBuilder.setVisionRequestInitializer(new VisionRequestInitializer("AIzaSyAWxBl0hkjk4TehMWR07Y1TPfV1ihFchjA")); // yeet
+        final Vision vision = visionBuilder.setApplicationName("Burnt").build();
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bm.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-        final ByteArrayInputStream inputStream =
-                new ByteArrayInputStream(outputStream.toByteArray());
+        final ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
 
-        AsyncTask.execute(new Runnable() {
-            byte[] photoData;
+        class VisionTask extends AsyncTask<Object,Integer,Integer> {
+            private byte[] photoData;
+
             @Override
-            public void run() {
+            protected Integer doInBackground(Object... objects) {
                 try {
-                     photoData = IOUtils.toByteArray(inputStream);
+                    photoData = IOUtils.toByteArray(inputStream);
                     inputStream.close();
                 }catch (IOException e){
                     e.printStackTrace();
@@ -140,21 +140,18 @@ public class Model {
 
                 AnnotateImageRequest request = new AnnotateImageRequest();
                 request.setImage(inputImage);
-                request.setFeatures(Arrays.asList(desiredFeature));
+                request.setFeatures(Collections.singletonList(desiredFeature));
 
-                BatchAnnotateImagesRequest batchRequest =
-                        new BatchAnnotateImagesRequest();
+                BatchAnnotateImagesRequest batchRequest = new BatchAnnotateImagesRequest();
 
-                batchRequest.setRequests(Arrays.asList(request));
+                batchRequest.setRequests(Collections.singletonList(request));
                 BatchAnnotateImagesResponse batchResponse = null;
                 try {
-                     batchResponse =
-                            vision.images().annotate(batchRequest).execute();
+                    batchResponse = vision.images().annotate(batchRequest).execute();
                 }catch (IOException e){
                     e.printStackTrace();
                 }
-                List<FaceAnnotation> faces = batchResponse.getResponses()
-                        .get(0).getFaceAnnotations();
+                List<FaceAnnotation> faces = batchResponse.getResponses().get(0).getFaceAnnotations();
                 FaceAnnotation face = faces.get(0);
                 List<Landmark> lst = face.getLandmarks();
                 Position leye = null, reye=null, nose=null;
@@ -181,9 +178,20 @@ public class Model {
                 }
                 int avg = range;
                 //i want to return this value:
-                int Color.argb(alpha/avg,red/avg,green/avg,blue/avg);
+                return Color.argb(alpha/avg,red/avg,green/avg,blue/avg);
             }
-        });
-        return 0;
+
+            protected void onProgressUpdate(Integer... progress) {
+                // nothing to do, yet?
+            }
+
+            protected void onPostExecute(Integer result) {
+                Intent next = new Intent(ctx, Informer.class);
+                next.putExtra("color", result);
+                ctx.startActivity(next);
+            }
+        }
+
+        new VisionTask().execute();
     }
 }
