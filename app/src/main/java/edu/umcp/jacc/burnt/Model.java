@@ -193,22 +193,6 @@ public class Model {
                 } else {
                     return -1;
                 }
-<<<<<<< HEAD
-                int range = (int)Math.abs(leye.getX() - reye.getX()) + 2;
-                int start = (int)(nose.getX() - (range/2));
-                int blue=0, red=0, green=0, alpha = 0;
-                int yPos = Math.round(nose.getY());
-                for (int i = start; i <= start + range; i++){
-                    blue += Color.blue(temp.getPixel(i,yPos));
-                    red += Color.red(temp.getPixel(i,yPos));
-                    green += Color.green(temp.getPixel(i,yPos));
-                    alpha += Color.alpha(temp.getPixel(i,yPos));
-                }
-                int avg = range;
-                //i want to return this value:
-                return Color.argb(alpha/avg,red/avg,green/avg,blue/avg);
-=======
->>>>>>> 8cac91560f2c84d7c90db2c30ce82de8a8faa962
             }
 
             protected void onProgressUpdate(Integer... progress) {
