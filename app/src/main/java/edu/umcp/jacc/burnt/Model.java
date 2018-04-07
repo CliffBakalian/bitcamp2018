@@ -55,7 +55,8 @@ public class Model {
     public static int manipulate(Bitmap bm){
         FaceDetector fd = new FaceDetector(bm.getWidth(),bm.getHeight(),1);
         FaceDetector.Face[] face = new FaceDetector.Face[1];
-        fd.findFaces(bm,face);
+        if (fd.findFaces(bm,face) == 0)
+            return 0;
         float edist = face[0].eyesDistance();
         PointF point = new PointF();
         face[0].getMidPoint(point);
