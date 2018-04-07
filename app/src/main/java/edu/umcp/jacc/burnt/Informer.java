@@ -2,6 +2,7 @@ package edu.umcp.jacc.burnt;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -91,7 +92,8 @@ public class Informer extends AppCompatActivity implements LocationListener {
         setContentView(R.layout.activity_informer);
 
         color = getIntent().getIntExtra("color", 0xFFFF);
-        Log.d(TAG, "begun -- color = " + color);
+        Log.d(TAG, "begun -- color = " + Integer.toHexString(color));
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         checkLocationPermission();
     }
 

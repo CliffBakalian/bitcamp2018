@@ -129,7 +129,7 @@ public class Model {
                 try {
                     photoData = IOUtils.toByteArray(inputStream);
                     inputStream.close();
-                }catch (IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
                 Image inputImage = new Image();
@@ -148,24 +148,47 @@ public class Model {
                 BatchAnnotateImagesResponse batchResponse = null;
                 try {
                     batchResponse = vision.images().annotate(batchRequest).execute();
-                }catch (IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
-                List<FaceAnnotation> faces = batchResponse.getResponses().get(0).getFaceAnnotations();
-                FaceAnnotation face = faces.get(0);
-                List<Landmark> lst = face.getLandmarks();
-                Position leye = null, reye=null, nose=null;
-                for (Landmark l : lst){
-                    if (l.getType().equals("NOSE_TIP")){
-                        nose = l.getPosition();
+                List<FaceAnnotation> faces = null;
+                if (batchResponse != null) {
+                    faces = batchResponse.getResponses().get(0).getFaceAnnotations();
+                    FaceAnnotation face = faces.get(0);
+                    List<Landmark> lst = face.getLandmarks();
+                    Position leye = null, reye = null, nose = null;
+                    for (Landmark l : lst) {
+                        if (l.getType().equals("NOSE_TIP")) {
+                            nose = l.getPosition();
+                        }
+                        if (l.getType().equals("RIGHT_EYE")) {
+                            reye = l.getPosition();
+                        }
+                        if (l.getType().equals("LEFT_EYE")) {
+                            leye = l.getPosition();
+                        }
                     }
-                    if (l.getType().equals("RIGHT_EYE")){
-                        reye = l.getPosition();
+                    int range = (int) Math.abs(leye.getX() - reye.getX()) + 2;
+                    int start = (int) (nose.getX() - (range / 2));
+                    int blue = 0, red = 0, green = 0, alpha = 0;
+                    int yPos = Math.round(nose.getY());
+                    for (int i = start; i <= start + range; i++) {
+                        blue += Color.blue(temp.getPixel(i, yPos));
+                        red += Color.red(temp.getPixel(i, yPos));
+                        green += Color.green(temp.getPixel(i, yPos));
+                        alpha += Color.alpha(temp.getPixel(i, yPos));
                     }
-                    if (l.getType().equals("LEFT_EYE")){
-                        leye = l.getPosition();
-                    }
+                    //Log.d("BLUE_VALUE", ""+ blue);
+                    //Log.d("RED_VALUE", ""+ red);
+                    //Log.d("GREEN_VALUE", ""+ green);
+                    //Log.d("ALPHA_VALUE", ""+ alpha);
+                    int avg = range;
+                    //i want to return this value:
+                    return Color.argb(alpha / avg, red / avg, green / avg, blue / avg);
+                } else {
+                    return -1;
                 }
+<<<<<<< HEAD
                 int range = (int)Math.abs(leye.getX() - reye.getX()) + 2;
                 int start = (int)(nose.getX() - (range/2));
                 int blue=0, red=0, green=0, alpha = 0;
@@ -179,6 +202,8 @@ public class Model {
                 int avg = range;
                 //i want to return this value:
                 return Color.argb(alpha/avg,red/avg,green/avg,blue/avg);
+=======
+>>>>>>> 8cac91560f2c84d7c90db2c30ce82de8a8faa962
             }
 
             protected void onProgressUpdate(Integer... progress) {
