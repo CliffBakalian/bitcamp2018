@@ -2,31 +2,37 @@ package edu.umcp.jacc.burnt;
 
 import android.graphics.Color;
 
-import java.util.Map;
-import org.json.*;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class DataParser {
 
     static int skinTones[] = {0xFFDFC4,0xEECEB3,0xE5C298,0xE5B887,0xE79E6D,0xCE967C,0xBA6C49,0xF0C8C9,0xB97C6D,0xAD6452,0xCB8442,0x704139,0x870400,0x430000,0x000000};
 
-    float uvIndex = 0;
-    double lon = 0;
-    double lat = 0;
-
-    public DataParser (float uvIndex1,double lon1,double lat1) {
-        uvIndex = uvIndex1;
-        lon = lon1;
-        lat = lat1;
-    }
-
-    public DataParser parseUV(String jsondata) {
-        DataParser result = null;
+    public float parseUV(String jsondata) {
+        float result = -1;
         try {
             JSONObject obj = new JSONObject(jsondata);
             float uvVal = obj.getInt("uvIndex");
-            double lonVal = obj.getDouble("lon");
-            double latVal = obj.getDouble("lat");
-            result = new DataParser(uvVal, lonVal, latVal);
+            return uvVal;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public double parseLonAndLat(String latOrLon, String jsondata) {
+        double result = -1;
+        try {
+            JSONObject obj = new JSONObject(jsondata);
+            if (latOrLon == "lon") {
+                result = obj.getDouble("lon");
+            } else if (latOrLon == "lat") {
+                result = obj.getDouble("lat");
+            } else {
+                throw new JSONException("Enter lat or lon");
+            }
+            return result;
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -54,7 +60,6 @@ public class DataParser {
 
 
     }
-    public int colorConverter(int color) {
     private int colorConverter(int color) {
         String hex = String.format("#%02x%02x%02x", Color.red(color), Color.green(color), Color.blue(color));
         int skinColor = Integer.parseInt(hex);
