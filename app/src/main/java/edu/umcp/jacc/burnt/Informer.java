@@ -17,12 +17,11 @@ public class Informer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_informer);
 
-        Map<String, String> params = new HashMap<>();
-        //params.put("id","524901");
-        //params.put("APPID","06fd8ba1c2e632e5a69b97895d7cb44d");
+        String lat = "":
+        String lon = "";
 
-        NetworkManager.getInstance(this).makeRequest(this, Request.Method.GET, null,
-                null, "https://api.darksky.net/forecast/d1e33e8fdffe9057c74d51f5a2de6e1d", new CustomListener<String>() {
+        NetworkManager.getInstance(this).makeRequest(this, Request.Method.GET, null, null,
+                "https://api.darksky.net/forecast/d1e33e8fdffe9057c74d51f5a2de6e1d" + lat + "," + lon, new CustomListener<String>() {
                     @Override
                     public void getResult(String object) {
                         DataParser.parseUV(object);
