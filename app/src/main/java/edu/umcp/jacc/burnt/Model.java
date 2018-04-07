@@ -2,8 +2,11 @@ package edu.umcp.jacc.burnt;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.PointF;
 import android.hardware.camera2.*;
 import android.hardware.camera2.CameraCharacteristics;
+import android.media.FaceDetector;
 import android.support.annotation.NonNull;
 
 import static android.hardware.camera2.CameraCharacteristics.LENS_FACING;
@@ -48,6 +51,16 @@ public class Model {
         }
     }
 
-
+    public void manipulate(Bitmap bm){
+        FaceDetector fd = new FaceDetector(bm.getWidth(),bm.getHeight(),1);
+        FaceDetector.Face[] face = new FaceDetector.Face[1];
+        fd.findFaces(bm,face);
+        float edist = face[0].eyesDistance();
+        PointF midpoint = new PointF();
+        face[0].getMidPoint(midpoint);
+        midpoint.set(midpoint.x,midpoint.y - (edist/2));
+        
+        
+    }
 
 }
