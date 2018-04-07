@@ -21,7 +21,7 @@ public class Informer extends AppCompatActivity {
         NetworkManager.getInstance(this).makeRequest(this, Request.Method.GET, null, null, url, new CustomListener<String>() {
             @Override
             public void getResult(String object) {
-                DataParser.parseUV(object);
+                //DataParser.parseUV(object);
             }
         });
     }
