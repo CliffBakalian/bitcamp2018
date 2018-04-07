@@ -29,4 +29,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.esri.arcgisruntime:arcgis-android:100.2.1'
+    
+
 }
