@@ -1,5 +1,6 @@
 package edu.umcp.jacc.burnt;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,6 +16,8 @@ public class Informer extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_informer);
+
+        Color c = (Color) getIntent().getSerializableExtra("color");
 
         // get latitude and longitude data
         Point p = new MapView(this).getLocationDisplay().getLocation().getPosition();

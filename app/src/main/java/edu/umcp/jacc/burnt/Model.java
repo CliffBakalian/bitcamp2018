@@ -52,7 +52,7 @@ public class Model {
         return manager;
     }
 
-    public int manipulate(Bitmap bm){
+    public static int manipulate(Bitmap bm){
         FaceDetector fd = new FaceDetector(bm.getWidth(),bm.getHeight(),1);
         FaceDetector.Face[] face = new FaceDetector.Face[1];
         fd.findFaces(bm,face);
