@@ -170,12 +170,16 @@ public class Model {
                 int start = (int)(nose.getX() - (range/2));
                 int blue=0, red=0, green=0, alpha = 0;
                 int yPos = Math.round(nose.getY());
-                for (int i = start; i <= range; i++){
+                for (int i = start; i <= start + range; i++){
                     blue += Color.blue(temp.getPixel(i,yPos));
                     red += Color.red(temp.getPixel(i,yPos));
                     green += Color.green(temp.getPixel(i,yPos));
                     alpha += Color.alpha(temp.getPixel(i,yPos));
                 }
+                //Log.d("BLUE_VALUE", ""+ blue);
+                //Log.d("RED_VALUE", ""+ red);
+                //Log.d("GREEN_VALUE", ""+ green);
+                //Log.d("ALPHA_VALUE", ""+ alpha);
                 int avg = range;
                 //i want to return this value:
                 return Color.argb(alpha/avg,red/avg,green/avg,blue/avg);
