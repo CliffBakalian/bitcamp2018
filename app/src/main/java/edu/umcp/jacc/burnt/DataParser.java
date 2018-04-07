@@ -7,7 +7,7 @@ import org.json.*;
 
 public class DataParser {
 
-    int skinTones[] = {0xFFDFC4,0xEECEB3,0xE5C298,0xE5B887,0xE79E6D,0xCE967C,0xBA6C49,0xF0C8C9,0xB97C6D,0xAD6452,0xCB8442,0x704139,0x870400,0x430000,0x000000};
+    static int skinTones[] = {0xFFDFC4,0xEECEB3,0xE5C298,0xE5B887,0xE79E6D,0xCE967C,0xBA6C49,0xF0C8C9,0xB97C6D,0xAD6452,0xCB8442,0x704139,0x870400,0x430000,0x000000};
 
     public float parseUV(String jsondata) throws JSONException {
         JSONObject obj = new JSONObject(jsondata);
@@ -15,6 +15,27 @@ public class DataParser {
         return uvVal;
     }
 
+    public static String skinType(int skinTone){
+
+        String skinType = "";
+        int count = 0;
+
+        for (int i=0;i<skinTones.length;i++){
+            if(skinTones[i] == skinTone)
+                count = i;
+        }
+
+        if(count >= 0 && count <= 4)
+            skinType = "Fair skin";
+        else if(count > 4 && count <= 9)
+            skinType = "Olive skin";
+        else
+            skinType = "Dark skin";
+
+        return skinType;
+
+
+    }
     public int colorConverter(int color) {
         String hex = String.format("#%02x%02x%02x", Color.red(color), Color.green(color), Color.blue(color));
         int skinColor = Integer.parseInt(hex);
