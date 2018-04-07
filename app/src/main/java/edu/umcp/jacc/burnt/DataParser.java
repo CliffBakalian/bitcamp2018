@@ -27,7 +27,7 @@ public class DataParser {
         return new DataParser(uvVal,lonVal,latVal);
     }
 
-    public int colorConverter(int color) {
+    private int colorConverter(int color) {
         String hex = String.format("#%02x%02x%02x", Color.red(color), Color.green(color), Color.blue(color));
         int skinColor = Integer.parseInt(hex);
         int i = 0;
