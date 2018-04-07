@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Burnt</string>
+    <string name="weather_icon">Icon representing the current weather</string>
 </resources>

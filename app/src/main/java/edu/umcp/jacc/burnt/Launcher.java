@@ -15,6 +15,9 @@ public class Launcher extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
 
+
+
+        /*
         Map<String,String> headers = new HashMap<>();
         headers.put("Content-Type", "application/x-www-form-urlencoded");
 
@@ -28,5 +31,6 @@ public class Launcher extends AppCompatActivity {
                 // for testing
             }
         });
+        */
     }
 }
