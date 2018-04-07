@@ -25,9 +25,9 @@ public class DataParser {
         double result = -1;
         try {
             JSONObject obj = new JSONObject(jsondata);
-            if (latOrLon == "lon") {
+            if (latOrLon.equals("lon")) {
                 result = obj.getDouble("longitude");
-            } else if (latOrLon == "lat") {
+            } else if (latOrLon.equals("lat")) {
                 result = obj.getDouble("latitude");
             } else {
                 throw new JSONException("Enter lat or lon");
@@ -37,29 +37,6 @@ public class DataParser {
             e.printStackTrace();
         }
         return result;
-    }
-
-
-    public static String skinType(int skinTone){
-
-        String skinType = "";
-        int count = 0;
-
-        for (int i=0;i<skinTones.length;i++){
-            if(skinTones[i] == skinTone)
-                count = i;
-        }
-
-        if(count >= 0 && count <= 4)
-            skinType = "Fair skin";
-        else if(count > 4 && count <= 9)
-            skinType = "Olive skin";
-        else
-            skinType = "Dark skin";
-
-        return skinType;
-
-
     }
 
     private int colorConverter(int color) {
