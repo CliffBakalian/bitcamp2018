@@ -11,7 +11,7 @@ public class DataParser {
         return uvVal;
     }
 
-    public float parseFacial() {
-        return 0.1f;
+    public float calcUV(float elevation, float cloudCoverage, float ozone){
+
     }
 }
