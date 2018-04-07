@@ -10,6 +10,7 @@ import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
 import android.media.FaceDetector;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 public class Model {
     public static CameraManager openCamera(Context c){
@@ -55,8 +56,10 @@ public class Model {
     public static int manipulate(Bitmap bm){
         FaceDetector fd = new FaceDetector(bm.getWidth(),bm.getHeight(),1);
         FaceDetector.Face[] face = new FaceDetector.Face[1];
-        if (fd.findFaces(bm,face) == 0)
-            return 0;
+        if (fd.findFaces(bm,face) == 0) {
+            Log.d("Error", "0");
+            return Color.argb(255,255,255,255);
+        }
         float edist = face[0].eyesDistance();
         PointF point = new PointF();
         face[0].getMidPoint(point);
@@ -73,7 +76,6 @@ public class Model {
             alpha += Color.alpha(bm.getPixel(i,yPos));
         }
         int avg = (posOffset-negOffset + 2);
-
         return Color.argb(alpha/avg,red/avg,green/avg,blue/avg);
     }
 
