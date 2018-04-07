@@ -19,12 +19,18 @@ public class DataParser {
         lat = lat1;
     }
 
-    public DataParser parseUV(String jsondata) throws JSONException {
-        JSONObject obj = new JSONObject(jsondata);
-        float uvVal = obj.getInt("uvIndex");
-        double lonVal = obj.getDouble("lon");
-        double latVal = obj.getDouble("lat");
-        return new DataParser(uvVal,lonVal,latVal);
+    public DataParser parseUV(String jsondata) {
+        DataParser result = null;
+        try {
+            JSONObject obj = new JSONObject(jsondata);
+            float uvVal = obj.getInt("uvIndex");
+            double lonVal = obj.getDouble("lon");
+            double latVal = obj.getDouble("lat");
+            result = new DataParser(uvVal, lonVal, latVal);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     private int colorConverter(int color) {
