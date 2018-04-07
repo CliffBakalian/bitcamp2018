@@ -58,8 +58,8 @@ public class DataParser {
         return finalColor;
     }
 
-    public double uvValConverter(float uv, int rgbVal, int previousSunburns) {
-        int skinColor = this.colorConverter(rgbVal);
+    public double uvValConverter(float uv, int rgbVal) {
+        int skinColor = colorConverter(rgbVal);
         int medianTone = skinTones[7];
         float difference = 0;
         int level1 = 1;
@@ -73,11 +73,6 @@ public class DataParser {
             i++;
         }
         percentage = 0.025*i;
-        if (previousSunburns == level1) {
-            percentage+=0.05;
-        } else if (previousSunburns == level2) {
-            percentage+=0.1;
-        }
         double experiencedUV = uv*(1+percentage);
         if (experiencedUV >= 0) {
             return experiencedUV;
