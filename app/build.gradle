@@ -29,6 +29,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.esri.arcgisruntime:arcgis-android:100.2.1'
-    
-
+    implementation 'com.google.api-client:google-api-client-android:1.22.0'
+    implementation 'com.google.apis:google-api-services-vision:v1-rev357-1.22.0'
+    implementation 'com.google.code.findbugs:jsr305:2.0.1'
+    implementation 'commons-io:commons-io:2.5'
 }
