@@ -7,10 +7,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Size;
 import android.view.SurfaceView;
 import android.widget.Button;
-
 import java.util.concurrent.Semaphore;
 
+
 public class Launcher extends AppCompatActivity {
+
     private Button btnCapture;
     private SurfaceView surfaceView;
 
