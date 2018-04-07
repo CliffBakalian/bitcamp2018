@@ -2,6 +2,7 @@ package edu.umcp.jacc.burnt;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.PointF;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
@@ -63,12 +64,16 @@ public class Model {
         int yPos = (int)point.y;
         int negOffset = xPos - (int)edist/2;
         int posOffset = xPos + (int)edist/2;
-        int color = 0;
+        int blue=0, red=0, green=0, alpha = 0;
         for (int i = negOffset; i <= posOffset; i++){
-            color +=bm.getPixel(i,yPos);
+            blue += Color.blue(bm.getPixel(i,yPos));
+            red += Color.red(bm.getPixel(i,yPos));
+            green += Color.green(bm.getPixel(i,yPos));
+            alpha += Color.alpha(bm.getPixel(i,yPos));
         }
-        color = color/(posOffset-negOffset + 2);
-        return color;
+        int avg = (posOffset-negOffset + 2);
+
+        return Color.argb(alpha/avg,red/avg,green/avg,blue/avg);
     }
 
 }
