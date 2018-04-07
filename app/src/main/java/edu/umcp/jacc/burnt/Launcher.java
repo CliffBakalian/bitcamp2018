@@ -1,5 +1,6 @@
 package edu.umcp.jacc.burnt;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
@@ -19,12 +20,14 @@ import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.concurrent.Semaphore;
+
 public class Launcher extends AppCompatActivity {
     private Button btnCapture;
     private SurfaceView surfaceView;
 
     private String mCameraId;
-
+    private Semaphore mCameraOpenCloseLock = new Semaphore(1);
     private CameraCaptureSession mCaptureSession;
     private CameraDevice mCameraDevice;
     private Size mPreviewSize;
@@ -69,16 +72,20 @@ public class Launcher extends AppCompatActivity {
         }
 
         @Override
-        public void onDisconnected(@NonNull CameraDevice camera) {
-
+        public void onDisconnected(@NonNull CameraDevice cameraDevice) {
+            mCameraOpenCloseLock.release();
+            cameraDevice.close();
+            mCameraDevice = null;
         }
 
         @Override
-        public void onError(@NonNull CameraDevice camera, int error) {
-
+        public void onError(@NonNull CameraDevice cameraDevice, int error) {
+            mCameraOpenCloseLock.release();
+            cameraDevice.close();
+            mCameraDevice = null;
         }
     }
-
+    public void createCameraPreviewSession(){};
     private void takePicture() {
         if (cameraDevice == null)
             return;
