@@ -58,7 +58,7 @@ public class Model {
         FaceDetector.Face[] face = new FaceDetector.Face[1];
         if (fd.findFaces(bm,face) == 0) {
             Log.d("Error", "0");
-            return Color.argb(255,255,255,255);
+            return bm.getPixel(bm.getWidth()/2, bm.getHeight()/2);
         }
         float edist = face[0].eyesDistance();
         PointF point = new PointF();
