@@ -253,7 +253,9 @@ public class Camera2BasicFragment extends Fragment
             Bitmap b = BitmapFactory.decodeByteArray(bytes,0,bytes.length,null);
 
             Intent next = new Intent(getActivity(), Informer.class);
-            next.putExtra("color", Model.manipulate(b));
+            int val = Model.manipulate(b);
+            next.putExtra("color", val);
+            Log.d(TAG, "int val is " + val);
             startActivity(next);
 
             //mBackgroundHandler.post(new ImageSaver(reader.acquireNextImage(), mFile));

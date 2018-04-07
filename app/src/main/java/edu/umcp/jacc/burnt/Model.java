@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 public class Model {
+    private static final String TAG = "Model";
     public static CameraManager openCamera(Context c){
         String id="BACK";
         CameraManager manager = (CameraManager)c.getSystemService(Context.CAMERA_SERVICE);
@@ -57,7 +58,7 @@ public class Model {
         FaceDetector fd = new FaceDetector(bm.getWidth(),bm.getHeight(),1);
         FaceDetector.Face[] face = new FaceDetector.Face[1];
         if (fd.findFaces(bm,face) == 0) {
-            Log.d("Error", "0");
+            Log.d(TAG, "Could not find a face!");
             return bm.getPixel(bm.getWidth()/2, bm.getHeight()/2);
         }
         float edist = face[0].eyesDistance();
