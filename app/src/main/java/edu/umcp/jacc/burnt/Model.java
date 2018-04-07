@@ -24,6 +24,7 @@ import com.google.api.services.vision.v1.model.FaceAnnotation;
 import com.google.api.services.vision.v1.model.Feature;
 import com.google.api.services.vision.v1.model.Image;
 import com.google.api.services.vision.v1.model.Landmark;
+import com.google.api.services.vision.v1.model.Position;
 
 import org.apache.commons.io.IOUtils;
 
@@ -33,6 +34,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
+
+import static android.graphics.Color.argb;
 
 public class Model {
 
@@ -100,10 +103,11 @@ public class Model {
             alpha += Color.alpha(bm.getPixel(i,yPos));
         }
         int avg = (posOffset-negOffset + 2);
-        return Color.argb(alpha/avg,red/avg,green/avg,blue/avg);
+        return argb(alpha/avg,red/avg,green/avg,blue/avg);
     }
 
     public int google(Bitmap bm) {
+        final Bitmap temp = bm;
         Vision.Builder visionBuilder = new Vision.Builder(
                 new NetHttpTransport(),
                 new AndroidJsonFactory(),
@@ -119,7 +123,7 @@ public class Model {
                 new ByteArrayInputStream(outputStream.toByteArray());
 
         AsyncTask.execute(new Runnable() {
-            byte[] photoData
+            byte[] photoData;
             @Override
             public void run() {
                 try {
@@ -153,9 +157,31 @@ public class Model {
                         .get(0).getFaceAnnotations();
                 FaceAnnotation face = faces.get(0);
                 List<Landmark> lst = face.getLandmarks();
+                Position leye = null, reye=null, nose=null;
                 for (Landmark l : lst){
-                    Log.d("LANDMARK_NAMES",l.getType());
+                    if (l.getType().equals("NOSE_TIP")){
+                        nose = l.getPosition();
+                    }
+                    if (l.getType().equals("RIGHT_EYE")){
+                        reye = l.getPosition();
+                    }
+                    if (l.getType().equals("LEFT_EYE")){
+                        leye = l.getPosition();
+                    }
                 }
+                int range = (int)Math.abs(leye.getX() - reye.getX()) + 2;
+                int start = (int)(nose.getX() - (range/2));
+                int blue=0, red=0, green=0, alpha = 0;
+                int yPos = Math.round(nose.getY());
+                for (int i = start; i <= range; i++){
+                    blue += Color.blue(temp.getPixel(i,yPos));
+                    red += Color.red(temp.getPixel(i,yPos));
+                    green += Color.green(temp.getPixel(i,yPos));
+                    alpha += Color.alpha(temp.getPixel(i,yPos));
+                }
+                int avg = range;
+                //i want to return this value:
+                int Color.argb(alpha/avg,red/avg,green/avg,blue/avg);
             }
         });
         return 0;
