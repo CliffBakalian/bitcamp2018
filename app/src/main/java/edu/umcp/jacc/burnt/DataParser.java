@@ -10,8 +10,4 @@ public class DataParser {
         float uvVal = obj.getJSONArray("result").getInt(2);
         return uvVal;
     }
-
-    public float calcUV(float elevation, float cloudCoverage, float ozone){
-
-    }
 }
