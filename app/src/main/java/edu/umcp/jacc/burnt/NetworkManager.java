@@ -14,6 +14,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.Map;
 
 /* NetworkManager
@@ -81,10 +82,22 @@ class NetworkManager {
                     }
                 }) {
             @Override
-            public Map<String, String> getHeaders() { return headers; }
+            public Map<String, String> getHeaders() {
+                if (headers != null) return headers;
+                Map<String, String> headers = new HashMap<>();
+                headers.put("User-Agent", "UMCP");
+                headers.put("Accept-Language", "en");
+                headers.put("Content-Type", "application/x-www-form-urlencoded");
+                return headers;
+            }
 
             @Override
-            public Map<String, String> getParams() { return params; }
+            public Map<String, String> getParams() {
+                if (params != null) return params;
+                Map<String, String> params = new HashMap<>();
+                params.put("love", "bitcamp2018");
+                return params;
+            }
         };
 
         // should this be default?
