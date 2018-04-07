@@ -52,6 +52,7 @@ public class Informer extends AppCompatActivity implements LocationListener {
             }
             return false;
         } else {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5, 1, this);
             return true;
         }
     }

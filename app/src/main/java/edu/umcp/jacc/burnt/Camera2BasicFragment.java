@@ -252,6 +252,8 @@ public class Camera2BasicFragment extends Fragment
             buffer.get(bytes);
             Bitmap b = BitmapFactory.decodeByteArray(bytes,0,bytes.length,null);
 
+            closeCamera();
+
             Model.google(b, getActivity()); // starts the google vision thread
             final Activity activity = getActivity();
             if (activity != null) {
@@ -264,7 +266,6 @@ public class Camera2BasicFragment extends Fragment
                     }
                 });
             }
-            closeCamera();
             //mBackgroundHandler.post(new ImageSaver(reader.acquireNextImage(), mFile));
         }
 
