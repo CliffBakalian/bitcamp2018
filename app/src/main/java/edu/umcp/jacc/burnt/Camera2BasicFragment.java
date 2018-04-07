@@ -6,7 +6,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -44,6 +43,7 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.io.File;
@@ -252,12 +252,20 @@ public class Camera2BasicFragment extends Fragment
             buffer.get(bytes);
             Bitmap b = BitmapFactory.decodeByteArray(bytes,0,bytes.length,null);
 
-            Intent next = new Intent(getActivity(), Informer.class);
-            int val = Model.manipulate(b);
-            next.putExtra("color", val);
-            Log.d(TAG, "int val is " + val);
-            startActivity(next);
+            closeCamera();
 
+            Model.google(b, getActivity()); // starts the google vision thread
+            final Activity activity = getActivity();
+            if (activity != null) {
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d(TAG, "activity is " + activity);
+                        Log.d(TAG, "view is " + activity.findViewById(R.id.progress));
+                        activity.findViewById(R.id.progress).setVisibility(View.VISIBLE);
+                    }
+                });
+            }
             //mBackgroundHandler.post(new ImageSaver(reader.acquireNextImage(), mFile));
         }
 

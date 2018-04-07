@@ -1,6 +1,7 @@
 package edu.umcp.jacc.burnt;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PointF;
@@ -33,9 +34,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static android.graphics.Color.argb;
+
+import javax.xml.transform.Result;
 
 public class Model {
 
@@ -106,30 +110,26 @@ public class Model {
         return argb(alpha/avg,red/avg,green/avg,blue/avg);
     }
 
-    public int google(Bitmap bm) {
+    public static void google(Bitmap bm, final Context ctx) {
         final Bitmap temp = bm;
-        Vision.Builder visionBuilder = new Vision.Builder(
-                new NetHttpTransport(),
-                new AndroidJsonFactory(),
-                null);
+        Vision.Builder visionBuilder = new Vision.Builder(new NetHttpTransport(), new AndroidJsonFactory(), null);
 
-        visionBuilder.setVisionRequestInitializer(
-                new VisionRequestInitializer("AIzaSyAWxBl0hkjk4TehMWR07Y1TPfV1ihFchjA"));
-        final Vision vision = visionBuilder.build();
+        visionBuilder.setVisionRequestInitializer(new VisionRequestInitializer("AIzaSyAWxBl0hkjk4TehMWR07Y1TPfV1ihFchjA")); // yeet
+        final Vision vision = visionBuilder.setApplicationName("Burnt").build();
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bm.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-        final ByteArrayInputStream inputStream =
-                new ByteArrayInputStream(outputStream.toByteArray());
+        final ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
 
-        AsyncTask.execute(new Runnable() {
-            byte[] photoData;
+        class VisionTask extends AsyncTask<Object,Integer,Integer> {
+            private byte[] photoData;
+
             @Override
-            public void run() {
+            protected Integer doInBackground(Object... objects) {
                 try {
-                     photoData = IOUtils.toByteArray(inputStream);
+                    photoData = IOUtils.toByteArray(inputStream);
                     inputStream.close();
-                }catch (IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
                 Image inputImage = new Image();
@@ -140,40 +140,60 @@ public class Model {
 
                 AnnotateImageRequest request = new AnnotateImageRequest();
                 request.setImage(inputImage);
-                request.setFeatures(Arrays.asList(desiredFeature));
+                request.setFeatures(Collections.singletonList(desiredFeature));
 
-                BatchAnnotateImagesRequest batchRequest =
-                        new BatchAnnotateImagesRequest();
+                BatchAnnotateImagesRequest batchRequest = new BatchAnnotateImagesRequest();
 
-                batchRequest.setRequests(Arrays.asList(request));
+                batchRequest.setRequests(Collections.singletonList(request));
                 BatchAnnotateImagesResponse batchResponse = null;
                 try {
-                     batchResponse =
-                            vision.images().annotate(batchRequest).execute();
-                }catch (IOException e){
+                    batchResponse = vision.images().annotate(batchRequest).execute();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
-                List<FaceAnnotation> faces = batchResponse.getResponses()
-                        .get(0).getFaceAnnotations();
-                FaceAnnotation face = faces.get(0);
-                List<Landmark> lst = face.getLandmarks();
-                Position leye = null, reye=null, nose=null;
-                for (Landmark l : lst){
-                    if (l.getType().equals("NOSE_TIP")){
-                        nose = l.getPosition();
+                List<FaceAnnotation> faces = null;
+                if (batchResponse != null) {
+                    faces = batchResponse.getResponses().get(0).getFaceAnnotations();
+                    FaceAnnotation face = faces.get(0);
+                    List<Landmark> lst = face.getLandmarks();
+                    Position leye = null, reye = null, nose = null;
+                    for (Landmark l : lst) {
+                        if (l.getType().equals("NOSE_TIP")) {
+                            nose = l.getPosition();
+                        }
+                        if (l.getType().equals("RIGHT_EYE")) {
+                            reye = l.getPosition();
+                        }
+                        if (l.getType().equals("LEFT_EYE")) {
+                            leye = l.getPosition();
+                        }
                     }
-                    if (l.getType().equals("RIGHT_EYE")){
-                        reye = l.getPosition();
+                    int range = (int) Math.abs(leye.getX() - reye.getX()) + 2;
+                    int start = (int) (nose.getX() - (range / 2));
+                    int blue = 0, red = 0, green = 0, alpha = 0;
+                    int yPos = Math.round(nose.getY());
+                    for (int i = start; i <= start + range; i++) {
+                        blue += Color.blue(temp.getPixel(i, yPos));
+                        red += Color.red(temp.getPixel(i, yPos));
+                        green += Color.green(temp.getPixel(i, yPos));
+                        alpha += Color.alpha(temp.getPixel(i, yPos));
                     }
-                    if (l.getType().equals("LEFT_EYE")){
-                        leye = l.getPosition();
-                    }
+                    //Log.d("BLUE_VALUE", ""+ blue);
+                    //Log.d("RED_VALUE", ""+ red);
+                    //Log.d("GREEN_VALUE", ""+ green);
+                    //Log.d("ALPHA_VALUE", ""+ alpha);
+                    int avg = range;
+                    //i want to return this value:
+                    return Color.argb(alpha / avg, red / avg, green / avg, blue / avg);
+                } else {
+                    return -1;
                 }
+<<<<<<< HEAD
                 int range = (int)Math.abs(leye.getX() - reye.getX()) + 2;
                 int start = (int)(nose.getX() - (range/2));
                 int blue=0, red=0, green=0, alpha = 0;
                 int yPos = Math.round(nose.getY());
-                for (int i = start; i <= range; i++){
+                for (int i = start; i <= start + range; i++){
                     blue += Color.blue(temp.getPixel(i,yPos));
                     red += Color.red(temp.getPixel(i,yPos));
                     green += Color.green(temp.getPixel(i,yPos));
@@ -181,9 +201,22 @@ public class Model {
                 }
                 int avg = range;
                 //i want to return this value:
-                int Color.argb(alpha/avg,red/avg,green/avg,blue/avg);
+                return Color.argb(alpha/avg,red/avg,green/avg,blue/avg);
+=======
+>>>>>>> 8cac91560f2c84d7c90db2c30ce82de8a8faa962
             }
-        });
-        return 0;
+
+            protected void onProgressUpdate(Integer... progress) {
+                // nothing to do, yet?
+            }
+
+            protected void onPostExecute(Integer result) {
+                Intent next = new Intent(ctx, Informer.class);
+                next.putExtra("color", result);
+                ctx.startActivity(next);
+            }
+        }
+
+        new VisionTask().execute();
     }
 }
