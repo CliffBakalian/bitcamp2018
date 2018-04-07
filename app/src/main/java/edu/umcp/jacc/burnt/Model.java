@@ -1,19 +1,13 @@
 package edu.umcp.jacc.burnt;
 
 import android.content.Context;
-<<<<<<< HEAD
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.PointF;
-import android.hardware.camera2.*;
-import android.hardware.camera2.CameraCharacteristics;
-import android.media.FaceDetector;
-=======
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
 import android.hardware.camera2.CameraManager;
->>>>>>> 35e90b3f949f9100dd9c0c8290ab661c47820cf5
+import android.media.FaceDetector;
 import android.support.annotation.NonNull;
 
 public class Model {
