@@ -169,9 +169,14 @@ public class Model {
                         }
                     }
                     int range = (int) Math.abs(leye.getX() - reye.getX()) + 2;
-                    int start = (int) (nose.getX() - (range / 2));
+                    int start = (int) Math.abs((nose.getX() - (range / 2)));
                     int blue = 0, red = 0, green = 0, alpha = 0;
                     int yPos = Math.round(nose.getY());
+                    int end = 0;
+                    if (start + range > temp.getWidth())
+                        end = temp.getWidth();
+                    else
+                        end = start + range;
                     for (int i = start; i <= start + range; i++) {
                         blue += Color.blue(temp.getPixel(i, yPos));
                         red += Color.red(temp.getPixel(i, yPos));
