@@ -33,6 +33,37 @@ public class DataParser {
         return result;
     }
 
+    public float parseUV(String jsondata) {
+        float result = -1;
+        try {
+            JSONObject obj = new JSONObject(jsondata);
+            float uvVal = obj.getInt("uvIndex");
+            return uvVal;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public double parseLonAndLat(String latOrLon, String jsondata) {
+        double result = -1;
+        try {
+            JSONObject obj = new JSONObject(jsondata);
+            if (latOrLon == "lon") {
+                result = obj.getDouble("longitude");
+            } else if (latOrLon == "lat") {
+                result = obj.getDouble("latitude");
+            } else {
+                throw new JSONException("Enter lat or lon");
+            }
+            return result;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
     public static String skinType(int skinTone){
 
         String skinType = "";
