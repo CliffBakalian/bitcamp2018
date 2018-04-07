@@ -1,15 +1,11 @@
 package edu.umcp.jacc.burnt;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.android.volley.Request;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.esri.android.map.MapView;
 
 public class Informer extends AppCompatActivity {
     @Override
@@ -17,16 +13,16 @@ public class Informer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_informer);
 
-        String lat = "":
-        String lon = "";
+        // get latitude and longitude data
+        Location l = new MapView(this).getLocationDisplayManager().getLocation();
 
-        NetworkManager.getInstance(this).makeRequest(this, Request.Method.GET, null, null,
-                "https://api.darksky.net/forecast/d1e33e8fdffe9057c74d51f5a2de6e1d" + lat + "," + lon, new CustomListener<String>() {
-                    @Override
-                    public void getResult(String object) {
-                        DataParser.parseUV(object);
-
-                    }
-                });
+        String url = "https://api.darksky.net/forecast/d1e33e8fdffe9057c74d51f5a2de6e1d" + l.getLatitude() + "," + l.getLongitude();
+        // call to UV
+        NetworkManager.getInstance(this).makeRequest(this, Request.Method.GET, null, null, url, new CustomListener<String>() {
+            @Override
+            public void getResult(String object) {
+                DataParser.parseUV(object);
+            }
+        });
     }
 }
