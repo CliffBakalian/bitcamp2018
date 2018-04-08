@@ -1,11 +1,11 @@
 package edu.umcp.jacc.burnt;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -17,6 +17,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -29,17 +30,16 @@ import com.esri.arcgisruntime.tasks.geocode.LocatorTask;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class Informer extends AppCompatActivity implements LocationListener {
+public class Informer extends AppCompatActivity implements LocationListener, View.OnClickListener {
 
     private static final String TAG = "Informer";
 
     private int color;
     private Criteria crit = new Criteria();
-    private String provider = LocationManager.GPS_PROVIDER;
     private boolean flag = true;
     private LocationManager locationManager;
 
-    public boolean checkLocationPermission() {
+    public void checkLocationPermission() {
         Log.d(TAG, "checkLocationPermission");
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // Should we show an explanation?
@@ -64,10 +64,8 @@ public class Informer extends AppCompatActivity implements LocationListener {
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 99);
             }
-            return false;
         } else {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 1, this);
-            return true;
         }
     }
 
@@ -97,14 +95,16 @@ public class Informer extends AppCompatActivity implements LocationListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_informer);
 
+        findViewById(R.id.back).setOnClickListener(this);
+
         color = getIntent().getIntExtra("color", 0xFFFF);
+        findViewById(R.id.back).setBackgroundTintList(ColorStateList.valueOf(color));
         Log.d(TAG, "begun -- color = " + Integer.toHexString(color));
 
         // findViewById(R.id.background).setBackgroundColor(color);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         crit.setAccuracy(Criteria.ACCURACY_MEDIUM);
-        provider = locationManager.getBestProvider(crit, true);
 
         final LocationListener ll = this;
 
@@ -194,11 +194,20 @@ public class Informer extends AppCompatActivity implements LocationListener {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        findViewById(R.id.progress).setVisibility(View.GONE);
                         ((TextView) findViewById(R.id.uv)).setText(String.format(getResources().getString(R.string.uv_display), res, DataParser.exposureCategory(res)));
                         ((TextView) findViewById(R.id.output_info)).setText(String.format(getResources().getString(R.string.you_ind), fin, DataParser.exposureCategory(fin)));
                     }
                 });
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.back) {
+            onBackPressed();
+            finish();
+        }
     }
 }

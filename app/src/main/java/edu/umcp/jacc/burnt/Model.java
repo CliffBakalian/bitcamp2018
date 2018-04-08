@@ -4,15 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.PointF;
-import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraCharacteristics;
-import android.hardware.camera2.CameraDevice;
-import android.hardware.camera2.CameraManager;
-import android.media.FaceDetector;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -32,58 +24,14 @@ import org.apache.commons.io.IOUtils;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import static android.graphics.Color.argb;
-
-import javax.xml.transform.Result;
 
 public class Model {
 
     private static final String TAG = "Model";
-    public static CameraManager openCamera(Context c){
-        String id="BACK";
-        CameraManager manager = (CameraManager)c.getSystemService(Context.CAMERA_SERVICE);
-        try {
-            if (manager != null) {
-                for (String cameraId : manager.getCameraIdList()) {
-                    CameraCharacteristics cc = manager.getCameraCharacteristics(cameraId);
-                    Integer facing = cc.get(CameraCharacteristics.LENS_FACING);
-                    if (facing != null && facing == CameraCharacteristics.LENS_FACING_FRONT) {
-                        // found the front-facing camera!
-                        id = cameraId;
-                    }
-                }
-                try {
-                    manager.openCamera(id, new CameraDevice.StateCallback() {
-                        @Override
-                        public void onOpened(@NonNull CameraDevice camera) {
 
-                        }
-
-                        @Override
-                        public void onDisconnected(@NonNull CameraDevice camera) {
-
-                        }
-
-                        @Override
-                        public void onError(@NonNull CameraDevice camera, int error) {
-
-                        }
-                    }, null);
-                } catch (SecurityException e) {
-                    e.printStackTrace();
-                }
-            }
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
-        }
-        return manager;
-    }
-
+    /*
     public static int manipulate(Bitmap bm){
         FaceDetector fd = new FaceDetector(bm.getWidth(),bm.getHeight(),1);
         FaceDetector.Face[] face = new FaceDetector.Face[1];
@@ -109,6 +57,7 @@ public class Model {
         int avg = (posOffset-negOffset + 2);
         return argb(alpha/avg,red/avg,green/avg,blue/avg);
     }
+    */
 
     public static void google(Bitmap bm, final Context ctx) {
         final Bitmap temp = bm;

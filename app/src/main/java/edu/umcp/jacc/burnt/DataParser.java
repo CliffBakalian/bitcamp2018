@@ -1,15 +1,10 @@
 package edu.umcp.jacc.burnt;
 
-import android.graphics.Color;
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.TreeSet;
 
 public class DataParser {
 

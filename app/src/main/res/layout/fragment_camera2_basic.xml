@@ -11,6 +11,16 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true" />
 
+    <ProgressBar
+        android:id="@+id/progress"
+        style="@android:style/Widget.Holo.ProgressBar.Large"
+        android:layout_width="103dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:indeterminate="true"
+        android:visibility="invisible" />
+
     <FrameLayout
         android:id="@+id/control"
         android:layout_width="match_parent"
@@ -18,15 +28,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:background="@color/control_background">
-
-        <ProgressBar
-            android:id="@+id/progress"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|start"
-            android:layout_marginStart="20dp"
-            android:indeterminate="true" />
 
         <Button
             android:id="@+id/picture"
@@ -47,7 +48,7 @@
             android:foregroundTint="@android:color/white"
             android:src="@android:drawable/ic_menu_info_details"
             app:backgroundTint="@android:color/transparent"
-            app:elevation="5dp" />
+            app:elevation="0dp" />
 
     </FrameLayout>
 

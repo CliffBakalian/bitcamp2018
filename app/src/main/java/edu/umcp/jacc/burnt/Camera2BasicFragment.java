@@ -43,7 +43,6 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.io.File;
@@ -262,12 +261,13 @@ public class Camera2BasicFragment extends Fragment
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Log.d(TAG, "activity is " + activity);
-                        Log.d(TAG, "view is " + activity.findViewById(R.id.progress));
                         activity.findViewById(R.id.progress).setVisibility(View.VISIBLE);
                     }
                 });
             }
+
+
+
             //mBackgroundHandler.post(new ImageSaver(reader.acquireNextImage(), mFile));
         }
 

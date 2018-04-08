@@ -1,34 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/holo_blue_bright">
 
-    <TextView
-        android:id="@+id/uv"
+    <ProgressBar
+        android:id="@+id/progress"
+        style="@android:style/Widget.Holo.ProgressBar.Large"
+        android:layout_width="103dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:indeterminate="true"
+        android:visibility="visible" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="20dp"
-        android:textAlignment="viewStart"
+        android:clickable="false"
+        android:maxHeight="300dp"
+        android:maxWidth="300dp"
+        android:minHeight="200dp"
+        android:minWidth="20dp"
+        android:src="@android:drawable/btn_dialog"
+        app:backgroundTint="@android:color/transparent"
+        app:elevation="0dp" />
+
+    <TextView
+        android:id="@+id/uv"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_toStartOf="@+id/progress"
+        android:textAlignment="viewEnd"
         android:textSize="24sp" />
 
     <TextView
         android:id="@+id/output_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="false"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:textAlignment="center"
-        android:textSize="26sp" />
+        android:textSize="30sp" />
 
     <TextView
         android:id="@+id/warning"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="50dp"
         android:text="@string/warning"
         android:textAlignment="center"
         android:textSize="24sp" />

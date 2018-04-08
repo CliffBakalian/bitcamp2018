@@ -4,18 +4,18 @@
         <![CDATA[
 
 
-            This sample demonstrates the basic use of Camera2 API. Check the source code to see how
-            you can display camera preview and take pictures.
+            Take a photo of yourself by pressing the button below, and we\'ll do some fancy stuff
+            and give you a UV-Index that\'s more relevant and personalized to you!
 
 
         ]]>
     </string>
     <string name="weather_icon">Icon representing the current weather</string>
-    <string name="picture">Picture</string>
+    <string name="picture">Burn!</string>
     <string name="description_info">Info</string>
     <string name="request_permission">This sample needs a permission.</string>
     <string name="camera_error">This device doesn\'t support Camera2 API.</string>
     <string name="warning">Always wear sunscreen! UV Radiation harms your skin whether or not you get sunburnt!</string>
     <string name="uv_display">Today\'s max UV-Index is %1$d\n(%2$s)</string>
-    <string name="you_ind">Your tailored UV-Index is %1$f\n(%2$s)</string>
+    <string name="you_ind">Your tailored UV-Index is %.2f\n(%2$s)</string>
 </resources>
