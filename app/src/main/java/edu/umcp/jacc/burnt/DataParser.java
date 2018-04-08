@@ -73,7 +73,7 @@ public class DataParser {
             }
             i++;
         }
-        percentage = 0.025*i;
+        percentage = 0.015*i;
         double experiencedUV = uv*(1+percentage);
         if (experiencedUV >= 0) {
             return experiencedUV;
