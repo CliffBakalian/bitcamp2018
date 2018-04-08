@@ -467,6 +467,16 @@ public class Camera2BasicFragment extends Fragment
         super.onResume();
         startBackgroundThread();
 
+        final Activity a = getActivity();
+        if (a != null) {
+            a.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    a.findViewById(R.id.progress).setVisibility(View.GONE);
+                }
+            });
+        }
+
         // When the screen is turned off and turned back on, the SurfaceTexture is already
         // available, and "onSurfaceTextureAvailable" will not be called. In that case, we can open
         // a camera and start preview from here (otherwise, we wait until the surface is ready in
