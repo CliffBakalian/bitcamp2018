@@ -1,6 +1,7 @@
 package edu.umcp.jacc.burnt;
 
 import android.graphics.Color;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,6 +29,7 @@ public class DataParser {
         } catch (JSONException e) {
             e.printStackTrace();
         } finally {
+            Log.d("UV_INDEX",""+result);
             return result;
         }
     }
