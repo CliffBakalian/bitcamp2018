@@ -21,11 +21,8 @@ public class DataParser {
         TreeSet<Float> maxSet = new TreeSet<Float>();
         try {
             JSONObject obj = new JSONObject(jsondata);
-            JSONArray newArr = obj.getJSONArray("hourly").getJSONArray(2);
-            for (int i = 0; i< newArr.length(); i++) {
-                maxSet.add((Float) newArr.getJSONObject(i).get("uvIndex"));
-            }
-            result = maxSet.last();
+            JSONArray newArr = obj.getJSONArray("daily").getJSONArray(2);
+            result = newArr.getInt(27);
         } catch (JSONException e) {
             e.printStackTrace();
         } finally {
