@@ -177,11 +177,15 @@ public class Model {
                         end = temp.getWidth();
                     else
                         end = start + range;
-                    for (int i = start; i <= start + range; i++) {
-                        blue += Color.blue(temp.getPixel(i, yPos));
-                        red += Color.red(temp.getPixel(i, yPos));
-                        green += Color.green(temp.getPixel(i, yPos));
-                        alpha += Color.alpha(temp.getPixel(i, yPos));
+                    int starty = Math.round(nose.getY()-2);
+                    int endy = starty + 5;
+                    for (int j = starty; j <= endy; j++) {
+                        for (int i = start; i <= end; i++) {
+                            blue += Color.blue(temp.getPixel(i, yPos));
+                            red += Color.red(temp.getPixel(i, yPos));
+                            green += Color.green(temp.getPixel(i, yPos));
+                            alpha += Color.alpha(temp.getPixel(i, yPos));
+                        }
                     }
                     //Log.d("BLUE_VALUE", ""+ blue);
                     //Log.d("RED_VALUE", ""+ red);
