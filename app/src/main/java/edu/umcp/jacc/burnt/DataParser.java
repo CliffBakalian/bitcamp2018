@@ -17,12 +17,12 @@ public class DataParser {
             0xA57E6E,0x967264,0x87675A,0x785C50,0x695046,0x5A453C,0x4B39320,0x3C2E28, 0x2D221E,0x000000};
 
     public float parseUV(String jsondata) {
-        float result = 0;
+        int result = 0;
         TreeSet<Float> maxSet = new TreeSet<Float>();
         try {
             JSONObject obj = new JSONObject(jsondata);
-            JSONArray newArr = obj.getJSONArray("daily").getJSONArray(2);
-            result = newArr.getInt(27);
+            JSONArray newArr = obj.getJSONObject("daily").getJSONArray("data");
+            result = ((JSONObject) newArr.get(0)).getInt("uvIndex");
         } catch (JSONException e) {
             e.printStackTrace();
         } finally {
