@@ -16,5 +16,6 @@
     <string name="request_permission">This sample needs a permission.</string>
     <string name="camera_error">This device doesn\'t support Camera2 API.</string>
     <string name="warning">Always wear sunscreen! UV Radiation harms your skin whether or not you get sunburnt!</string>
-    <string name="uv">UV: %1$f</string>
+    <string name="uv_display">Today\'s max UV-Index is %1$d\n(%2$s)</string>
+    <string name="you_ind">Your tailored UV-Index is %1$f\n(%2$s)</string>
 </resources>

@@ -100,7 +100,7 @@ public class Informer extends AppCompatActivity implements LocationListener {
         color = getIntent().getIntExtra("color", 0xFFFF);
         Log.d(TAG, "begun -- color = " + Integer.toHexString(color));
 
-        findViewById(R.id.background).setBackgroundColor(color);
+        // findViewById(R.id.background).setBackgroundColor(color);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         crit.setAccuracy(Criteria.ACCURACY_MEDIUM);
@@ -188,11 +188,14 @@ public class Informer extends AppCompatActivity implements LocationListener {
         NetworkManager.getInstance(this).makeRequest(this, Request.Method.GET, null, null, url, new CustomListener<String>() {
             @Override
             public void getResult(String object) {
-                final float res = DataParser.parseUV(object);
+                final int res = DataParser.parseUV(object);
+                final double fin = DataParser.uvValConverter(res, color);
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ((TextView) findViewById(R.id.uv)).setText(getResources().getString(R.string.uv, res));
+                        ((TextView) findViewById(R.id.uv)).setText(String.format(getResources().getString(R.string.uv_display), res, DataParser.exposureCategory(res)));
+                        ((TextView) findViewById(R.id.output_info)).setText(String.format(getResources().getString(R.string.you_ind), fin, DataParser.exposureCategory(fin)));
                     }
                 });
             }

@@ -48,11 +48,10 @@ public class DataParser {
 //        return result;
 //    }
 
-    private int colorConverter(int color) {
-        String hex = String.format("#%02x%02x%02x", Color.red(color), Color.green(color), Color.blue(color));
-        int skinColor = Integer.parseInt(hex);
+    private static int colorConverter(int color) {
+        int skinColor = color & (0x00ffffff);
         int i = 0;
-        int finalColor = 0;
+        int finalColor;
         while (skinTones[i] >= skinColor) {
             i++;
         }
@@ -67,38 +66,34 @@ public class DataParser {
         return finalColor;
     }
 
-    public double uvValConverter(float uv, int rgbVal) {
+    public static double uvValConverter(float uv, int rgbVal) {
         int skinColor = colorConverter(rgbVal);
-        int medianTone = skinTones[7];
         float difference = 0;
-        int level1 = 1;
-        int level2 = 2;
         int i = 0;
-        double percentage = 0;
+        double percentage;
         for (int elem: skinTones) {
             if (skinColor == elem) {
                 difference = (skinTones.length/2)-i;
             }
             i++;
         }
-        percentage = 0.015*i;
+        percentage = 0.15*difference;
         double experiencedUV = uv*(1+percentage);
         if (experiencedUV >= 0) {
             return experiencedUV;
         } else {
-            return 0
-                    ;
+            return 0;
         }
     }
-    public String exposureCategory(double experiencedUV) {
+    public static String exposureCategory(double experiencedUV) {
         String result = "";
-        if (experiencedUV >= 0 && experiencedUV <= 2) {
+        if (experiencedUV < 2.5) {
             result = "Low";
-        } else if (experiencedUV >= 3 && experiencedUV <= 5) {
+        } else if (experiencedUV >= 2.5 && experiencedUV < 5.5) {
             result = "Moderate";
-        } else if (experiencedUV >= 6 && experiencedUV <= 7) {
+        } else if (experiencedUV >= 5.5 && experiencedUV < 7.5) {
             result = "High";
-        } else if (experiencedUV >= 8 && experiencedUV <= 10) {
+        } else if (experiencedUV >= 7.5 && experiencedUV < 10.5) {
             result = "Very High";
         } else {
             result = "Extreme";
