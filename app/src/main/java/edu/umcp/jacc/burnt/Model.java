@@ -194,6 +194,7 @@ public class Model {
                             //Log.d("GREEN_VALUE", ""+ green);
                             //Log.d("ALPHA_VALUE", ""+ alpha);
                             //i want to return this value:
+                            range = (endy - starty + 2) * (end - start + 2);
                             return Color.argb(alpha / range, red / range, green / range, blue / range);
                         }
                     }
