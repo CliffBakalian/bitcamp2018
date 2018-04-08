@@ -154,48 +154,51 @@ public class Model {
                 List<FaceAnnotation> faces = null;
                 if (batchResponse != null) {
                     faces = batchResponse.getResponses().get(0).getFaceAnnotations();
-                    FaceAnnotation face = faces.get(0);
-                    List<Landmark> lst = face.getLandmarks();
-                    Position leye = null, reye = null, nose = null;
-                    for (Landmark l : lst) {
-                        if (l.getType().equals("NOSE_TIP")) {
-                            nose = l.getPosition();
+                    if (faces != null) {
+                        FaceAnnotation face = faces.get(0);
+                        List<Landmark> lst = face.getLandmarks();
+                        Position leye = null, reye = null, nose = null;
+                        for (Landmark l : lst) {
+                            if (l.getType().equals("NOSE_TIP")) {
+                                nose = l.getPosition();
+                            }
+                            if (l.getType().equals("RIGHT_EYE")) {
+                                reye = l.getPosition();
+                            }
+                            if (l.getType().equals("LEFT_EYE")) {
+                                leye = l.getPosition();
+                            }
                         }
-                        if (l.getType().equals("RIGHT_EYE")) {
-                            reye = l.getPosition();
-                        }
-                        if (l.getType().equals("LEFT_EYE")) {
-                            leye = l.getPosition();
+                        if (leye != null && reye != null && nose != null) {
+                            int range = (int) Math.abs(leye.getX() - reye.getX()) + 2;
+
+                            int start = (int) Math.abs((nose.getX() - (range / 2)));
+                            int blue = 0, red = 0, green = 0, alpha = 0;
+                            int end = 0;
+                            if (start + range > temp.getWidth())
+                                end = temp.getWidth();
+                            else
+                                end = start + range;
+                            int starty = Math.round(nose.getY() - 5);
+                            int endy = starty + 11;
+                            for (int j = starty; j <= endy; j++) {
+                                for (int i = start; i <= end; i++) {
+                                    blue += Color.blue(temp.getPixel(i, j));
+                                    red += Color.red(temp.getPixel(i, j));
+                                    green += Color.green(temp.getPixel(i, j));
+                                    alpha += Color.alpha(temp.getPixel(i, j));
+                                }
+                            }
+                            //Log.d("BLUE_VALUE", ""+ blue);
+                            //Log.d("RED_VALUE", ""+ red);
+                            //Log.d("GREEN_VALUE", ""+ green);
+                            //Log.d("ALPHA_VALUE", ""+ alpha);
+                            //i want to return this value:
+                            return Color.argb(alpha / range, red / range, green / range, blue / range);
                         }
                     }
-                    int range = (int) Math.abs(leye.getX() - reye.getX()) + 2;
-                    int start = (int) Math.abs((nose.getX() - (range / 2)));
-                    int blue = 0, red = 0, green = 0, alpha = 0;
-                    int end = 0;
-                    if (start + range > temp.getWidth())
-                        end = temp.getWidth();
-                    else
-                        end = start + range;
-                    int starty = Math.round(nose.getY()-5);
-                    int endy = starty + 11;
-                    for (int j = starty; j <= endy; j++) {
-                        for (int i = start; i <= end; i++) {
-                            blue += Color.blue(temp.getPixel(i, j));
-                            red += Color.red(temp.getPixel(i, j));
-                            green += Color.green(temp.getPixel(i, j));
-                            alpha += Color.alpha(temp.getPixel(i, j));
-                        }
-                    }
-                    //Log.d("BLUE_VALUE", ""+ blue);
-                    //Log.d("RED_VALUE", ""+ red);
-                    //Log.d("GREEN_VALUE", ""+ green);
-                    //Log.d("ALPHA_VALUE", ""+ alpha);
-                    int avg = range;
-                    //i want to return this value:
-                    return Color.argb(alpha / avg, red / avg, green / avg, blue / avg);
-                } else {
-                    return -1;
                 }
+                return -1;
             }
 
             protected void onProgressUpdate(Integer... progress) {
