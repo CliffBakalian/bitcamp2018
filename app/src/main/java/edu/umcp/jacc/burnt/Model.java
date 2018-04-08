@@ -171,7 +171,6 @@ public class Model {
                     int range = (int) Math.abs(leye.getX() - reye.getX()) + 2;
                     int start = (int) Math.abs((nose.getX() - (range / 2)));
                     int blue = 0, red = 0, green = 0, alpha = 0;
-                    int yPos = Math.round(nose.getY());
                     int end = 0;
                     if (start + range > temp.getWidth())
                         end = temp.getWidth();
@@ -181,10 +180,10 @@ public class Model {
                     int endy = starty + 11;
                     for (int j = starty; j <= endy; j++) {
                         for (int i = start; i <= end; i++) {
-                            blue += Color.blue(temp.getPixel(i, yPos));
-                            red += Color.red(temp.getPixel(i, yPos));
-                            green += Color.green(temp.getPixel(i, yPos));
-                            alpha += Color.alpha(temp.getPixel(i, yPos));
+                            blue += Color.blue(temp.getPixel(i, j));
+                            red += Color.red(temp.getPixel(i, j));
+                            green += Color.green(temp.getPixel(i, j));
+                            alpha += Color.alpha(temp.getPixel(i, j));
                         }
                     }
                     //Log.d("BLUE_VALUE", ""+ blue);
