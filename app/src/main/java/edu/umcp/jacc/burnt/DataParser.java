@@ -7,7 +7,8 @@ import org.json.JSONObject;
 
 public class DataParser {
 
-    static int skinTones[] = {0xFFDFC4,0xEECEB3,0xE5C298,0xE5B887,0xE79E6D,0xCE967C,0xBA6C49,0xF0C8C9,0xB97C6D,0xAD6452,0xCB8442,0x704139,0x870400,0x430000,0x000000};
+    static int skinTones[] = {0xFFE5C8,0xFFDABE,0xFFCEB4,0xFFC3AA,0xF0B8A0,0xE1AC96,0xD2A18C,0xC39582,0xB48A78
+            0xA57E6E,0x967264,0x87675A,0x785C50,0x695046,0x5A453C,0x4B39320,0x3C2E28, 0x2D221E,0x000000};
 
     public float parseUV(String jsondata) {
         float result = -1;
@@ -21,23 +22,23 @@ public class DataParser {
         return result;
     }
 
-    public double parseLonAndLat(String latOrLon, String jsondata) {
-        double result = -1;
-        try {
-            JSONObject obj = new JSONObject(jsondata);
-            if (latOrLon.equals("lon")) {
-                result = obj.getDouble("longitude");
-            } else if (latOrLon.equals("lat")) {
-                result = obj.getDouble("latitude");
-            } else {
-                throw new JSONException("Enter lat or lon");
-            }
-            return result;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
+//    public double parseLonAndLat(String latOrLon, String jsondata) {
+//        double result = -1;
+//        try {
+//            JSONObject obj = new JSONObject(jsondata);
+//            if (latOrLon.equals("lon")) {
+//                result = obj.getDouble("longitude");
+//            } else if (latOrLon.equals("lat")) {
+//                result = obj.getDouble("latitude");
+//            } else {
+//                throw new JSONException("Enter lat or lon");
+//            }
+//            return result;
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        return result;
+//    }
 
     private int colorConverter(int color) {
         String hex = String.format("#%02x%02x%02x", Color.red(color), Color.green(color), Color.blue(color));
@@ -68,7 +69,7 @@ public class DataParser {
         double percentage = 0;
         for (int elem: skinTones) {
             if (skinColor == elem) {
-                difference = 7-i;
+                difference = (skinTones.length/2)-i;
             }
             i++;
         }
@@ -77,7 +78,8 @@ public class DataParser {
         if (experiencedUV >= 0) {
             return experiencedUV;
         } else {
-            return 0;
+            return 0
+                    ;
         }
     }
     public String exposureCategory(double experiencedUV) {
