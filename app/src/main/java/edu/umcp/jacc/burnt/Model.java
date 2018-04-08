@@ -177,8 +177,8 @@ public class Model {
                         end = temp.getWidth();
                     else
                         end = start + range;
-                    int starty = Math.round(nose.getY()-2);
-                    int endy = starty + 5;
+                    int starty = Math.round(nose.getY()-5);
+                    int endy = starty + 11;
                     for (int j = starty; j <= endy; j++) {
                         for (int i = start; i <= end; i++) {
                             blue += Color.blue(temp.getPixel(i, yPos));
