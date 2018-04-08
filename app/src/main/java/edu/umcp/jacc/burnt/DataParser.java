@@ -2,24 +2,34 @@ package edu.umcp.jacc.burnt;
 
 import android.graphics.Color;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.TreeSet;
+
 public class DataParser {
 
-    static int skinTones[] = {0xFFE5C8,0xFFDABE,0xFFCEB4,0xFFC3AA,0xF0B8A0,0xE1AC96,0xD2A18C,0xC39582,0xB48A78
+    static int skinTones[] = {0xFFE5C8,0xFFDABE,0xFFCEB4,0xFFC3AA,0xF0B8A0,0xE1AC96,0xD2A18C,0xC39582,0xB48A78,
             0xA57E6E,0x967264,0x87675A,0x785C50,0x695046,0x5A453C,0x4B39320,0x3C2E28, 0x2D221E,0x000000};
 
     public float parseUV(String jsondata) {
-        float result = -1;
+        float result = 0;
+        TreeSet<Float> maxSet = new TreeSet<Float>();
         try {
             JSONObject obj = new JSONObject(jsondata);
-            float uvVal = obj.getInt("uvIndex");
-            return uvVal;
+            JSONArray newArr = obj.getJSONArray("hourly").getJSONArray(2);
+            for (int i = 0; i< newArr.length(); i++) {
+                maxSet.add((Float) newArr.getJSONObject(i).get("uvIndex"));
+            }
+            result = maxSet.last();
         } catch (JSONException e) {
             e.printStackTrace();
+        } finally {
+            return result;
         }
-        return result;
     }
 
 //    public double parseLonAndLat(String latOrLon, String jsondata) {
