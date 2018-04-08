@@ -17,6 +17,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.esri.arcgisruntime.concurrent.ListenableFuture;
@@ -187,8 +188,13 @@ public class Informer extends AppCompatActivity implements LocationListener {
         NetworkManager.getInstance(this).makeRequest(this, Request.Method.GET, null, null, url, new CustomListener<String>() {
             @Override
             public void getResult(String object) {
-                Log.d(TAG, object);
-                //new DataParser().parseUV(object);
+                final float res = DataParser.parseUV(object);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((TextView) findViewById(R.id.uv)).setText(getResources().getString(R.string.uv, res));
+                    }
+                });
             }
         });
     }

@@ -13,12 +13,11 @@ import java.util.TreeSet;
 
 public class DataParser {
 
-    static int skinTones[] = {0xFFE5C8,0xFFDABE,0xFFCEB4,0xFFC3AA,0xF0B8A0,0xE1AC96,0xD2A18C,0xC39582,0xB48A78,
+    private static int skinTones[] = {0xFFE5C8,0xFFDABE,0xFFCEB4,0xFFC3AA,0xF0B8A0,0xE1AC96,0xD2A18C,0xC39582,0xB48A78,
             0xA57E6E,0x967264,0x87675A,0x785C50,0x695046,0x5A453C,0x4B39320,0x3C2E28, 0x2D221E,0x000000};
 
-    public float parseUV(String jsondata) {
+    public static int parseUV(String jsondata) {
         int result = 0;
-        TreeSet<Float> maxSet = new TreeSet<Float>();
         try {
             JSONObject obj = new JSONObject(jsondata);
             JSONArray newArr = obj.getJSONObject("daily").getJSONArray("data");
@@ -27,8 +26,8 @@ public class DataParser {
             e.printStackTrace();
         } finally {
             Log.d("UV_INDEX",""+result);
-            return result;
         }
+        return result;
     }
 
 //    public double parseLonAndLat(String latOrLon, String jsondata) {
